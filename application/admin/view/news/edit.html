@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-size: 14px;
+        }
+        div{
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="{:url('update')}" method="post" enctypr="multipart/form-data">
+        {volist name='olddata' id='vol'}
+        <input type="text" value={$vol.id} name="id"  style="display:none">
+        <div>
+            <label>
+                标题: 
+                <input value="{$vol.title}" type="text" name="title" autocomplete="off">
+            </label>
+        </div>
+        <div>
+            <label>
+                描述: 
+                <input value="{$vol.desn}" type="text" name="desn" autocomplete="off">
+            </label>
+        </div>
+        <div>
+            <label>
+                作者: 
+                <input value="{$vol.author}" type="text" name="author" autocomplete="off">
+            </label>
+        </div>
+        <div>
+            <label>
+                内容: 
+                <textarea value="{$vol.body}" name="body" cols="60" rows="10">{$vol.body}</textarea>
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="submit" value="修改新闻">
+            </label>
+        </div>
+        {/volist}
+    </form>
+</body>
+</html>

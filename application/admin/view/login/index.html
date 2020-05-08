@@ -2,32 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>用户登录</title>
     <style>
-        body{
+
+        body {
             font-size: 14px;
         }
+        form{
+            display: block;
+            width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        div{
+            margin-bottom: 20px;
+        }
     </style>
+    <script src="/js/jquery-3.5.0.min.js"></script>
 </head>
 <body>
-    <h2>后台登录</h2>
-    <form action="{:url('login')}">
+<form action="{:url('login')}" method="post">
+    <header>
+        <h1>后台管理系统</h1>
+    </header>
     <div>
         <label>
-            账号:
-            <input type="text" name="username">
+            账号：
+            <input type="text" name="username" value="zhangsan">
         </label>
     </div>
     <div>
         <label>
-            密码:
-            <input type="text" name="password">
+            密码：
+            <input type="text" name="password" value="password">
         </label>
     </div>
     <div>
-            <input type="submit" value="进入后台"">
+        <img id="verify_image" src="{:captcha_src()}" alt="captcha" /> 
+        <a id="kanbuq" href="javascript:refreshVerify();">换一张</a>
     </div>
-    </form>
+    验证码：<input type="text" name="captcha" id="">
+    <div>
+        <input type="submit" value="进入系统">
+    </div>
+</form>
+<script type="text/javascript">
+    function refreshVerify(){
+      var ts = Date.parse(new Date())/1000;
+      $("#verify_image").attr("src","/captcha?id="+ts);
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评论</title>
+</head>
+<body>
+    {volist name="arr" id="vol"}
+        <li>{$vol.title} <a href="{:url('view',['_id'=>$vol._id])}">查看评论</a> </li>
+    {/volist}
+</body>
+</html>

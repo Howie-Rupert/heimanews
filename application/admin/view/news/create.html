@@ -1,49 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>后台管理系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body{
-            font-size: 14px;
-        }
-        div{
-            margin-bottom:10px;
-        }
-    </style>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-1.8.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <form action="{:url('store')}" method="post">
-        <div>
-            <label>
-                标题: 
-                <input type="text" name="title" autocomplete="off">
-            </label>
+<!-- 上 -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="index.html"><span class="first">后台管理系统</span></a>
+            <ul class="nav">
+                <li class="active"><a href="/admin/news/index">首页</a></li>
+            </ul>
         </div>
-        <div>
-            <label>
-                描述: 
-                <input type="text" name="desn" autocomplete="off">
-            </label>
-        </div>
-        <div>
-            <label>
-                作者: 
-                <input type="text" name="author" autocomplete="off">
-            </label>
-        </div>
-        <div>
-            <label>
-                内容: 
-                <textarea name="body" cols="60" rows="10"></textarea>
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="submit" value="添加新闻">
-            </label>
-        </div>
-    </form>
+    </div>
+</div>
+<!-- 左 -->
+<div class="sidebar-nav">
+    <a href="#error-menu" class="nav-header collapsed" data-toggle="collapse"><i class="icon-exclamation-sign"></i>新闻管理</a>
+    <ul id="error-menu" class="nav nav-list collapse in">
+        <li><a href="/admin/news/index">新闻列表</a></li>
+        <li><a href="/admin/news/create">新闻新增</a></li>
+
+    </ul>
+    <a href="#accounts-menu" class="nav-header" data-toggle="collapse"><i class="icon-exclamation-sign"></i>用户管理</a>
+    <ul id="accounts-menu" class="nav nav-list collapse">
+        <li><a href="/admin/user/index">用户列表</a></li>
+    </ul>
+</div>
+<!-- 右 -->
+<div class="content">
+    <div class="header">
+        <h1 class="page-title">新增新闻</h1>
+    </div>
+
+    <div class="well">
+        <form action="{:url('store')}" method="post">
+            <div>
+                <label>
+                    标题：
+                    <input type="text" name="title" class="input-xlarge" autocomplete="off">
+                </label>
+            </div>
+            <div>
+                <label>
+                    描述：
+                    <input type="text" name="desn" class="input-xlarge" autocomplete="off">
+                </label>
+            </div>
+            <div>
+                <label>
+                    内容：
+                    <textarea class="input-xlarge" id="body" name="body"></textarea>
+                </label>
+            </div>
+            <div>
+                <input class="btn btn-primary"  type="submit" value="添加新闻">
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
+    <script>
+        var ue = UE.getEditor('body',{
+            initialFrameWidth:1000
+        });
+    </script>
+    <!-- footer -->
+    <footer>
+        <hr>
+        <p>© 2017 <a href="javascript:void(0);" target="_blank">ADMIN</a></p>
+    </footer>
+</div>
 </body>
 </html>

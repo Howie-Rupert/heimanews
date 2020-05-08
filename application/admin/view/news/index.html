@@ -1,83 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>后台管理系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-    body{
-        font-size: 14px;
-        margin:0 auto;
-    }
-    .nav{
-        text-align: right;
-        padding-right:20px ;
-    }
-    div{
-        margin-bottom:10px;
-    }
-    table{
-        width:1000px;
-        margin:0 auto;
-    }
-</style>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-1.8.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="nav">
-        <a href="{:url('create')}">添加新闻</a>
+<!-- 上 -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="index.html"><span class="first">后台管理系统</span></a>
+            <ul class="nav">
+                <li class="active"><a href="/admin/news/index">首页</a></li>
+            </ul>
+        </div>
     </div>
-    <div class="nav">
-        <a  onclick="delall('{:url('delall')}',this)">删除全部</a>
+</div>
+<!-- 左 -->
+<div class="sidebar-nav">
+    <a href="#error-menu" class="nav-header collapsed" data-toggle="collapse"><i class="icon-exclamation-sign"></i>新闻管理</a>
+    <ul id="error-menu" class="nav nav-list collapse in">
+        <li><a href="/admin/news/index">新闻列表</a></li>
+        <li><a href="/admin/news/create">新闻新增</a></li>
+        <!-- <li><a href="{:url('news/comment')}">文章评论</a></li> -->
+
+    </ul>
+    <a href="#accounts-menu" class="nav-header" data-toggle="collapse"><i class="icon-exclamation-sign"></i>用户管理</a>
+    <ul id="accounts-menu" class="nav nav-list collapse">
+        <li><a href="/admin/user/index">用户列表</a></li>
+    </ul>
+</div>
+<div class="content">
+
+    <div class="well">
+        <form  method="post" class="form-search">
+            <div class="row-fluid" style="text-align: left;">
+                <div class="pull-left span4 unstyled">
+                    <p> 标题：<input class="input-medium"name="keyword" type="text"></p>
+                </div>
+            </div>
+            <input type="submit" value="查找"></input>
+            <a style="float:right" class="dha" href="{:url('paixu')}">热门新闻排序</a>
+        </form>
     </div>
-    <hr>
-    <div>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>标题</th>
-                <th>作者</th>
-                <th>操作</th>
-            </tr>
-            {if condition="$code == 1"}
-            {foreach $data as $item}
-            <tr>
-                <th>{$item.id}</th>
-                <th>{$item.title}</th>
-                <th>{$item.author}</th>
-                <th>
-                    <a href="{:url('admin/news/edit',['id'=> $item.id])}">修改</a>
-                    <a onclick="del('{:url('del',['id'=> $item.id])}',this)">删除</a>
-                </th>
-            </tr>
-            {/foreach}
-            {/if}
-        </table>
+    <div class="body">
+        <form class="bodyform" method="post" action="{:url('delete')}">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <th>选择</th>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>时间</th>
+                    <th>访问量</th>
+                    <th>操作</th>
+                </tr>
+                {foreach $data as $key=>$item}
+                    <tr class="success">
+                        <th><input value="{$item._id}" type="checkbox" name="id[]" id=""></th>
+                        <th>{$key+1}</th>
+                        <th>{$item.title}</th>
+                        <th>{$item.ctime|date="Y-m-d",###}</th>
+                        <th>{$item.click}</th>
+                        <th>
+                            <a href="{:url('list',['_id'=>$item._id])}">查看</a>
+                            <a href="{:url('view',['_id'=>$item._id])}">查看评论</a>
+                            <a href="{:url('edit',['_id'=>$item._id])}">修改</a>
+                            <a onclick="if(confirm('确定删除?')==false)return false;" href="{:url('del',['_id'=>$item._id])}">删除</a>
+                        </th>
+                    </tr>
+                {/foreach}
+                <tr class="success">
+                    <input type="checkbox" id="selectAll" name="selectAll">全选 
+                    <input type="submit" onclick="return window.confirm('确认删除');" value="删除选中">
+                </tr>
+            </table>
+        </form>
+        <div style="padding-left: 40%;padding-top: 20px;;">
+            {$fpage}
+        </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+</div>
     <script>
-        function del(url,obj){
-            var bool = confirm('确认删除此条新闻吗？');
-            if(bool){
-                $.get(url,function(ret){
-                    if (ret.status == 0){
-                        $(obj).parents('tr').remove();
-                        alert(ret.msg);
-                    }
-                },'json');
-            }
-        }
-        function delall(url,obj){
-            var bool = confirm('确认删除所有新闻吗？');
-            if(bool){
-                $.get(url,function(ret){
-                    if (ret.status == 0){
-                        $(obj).parents('tr').remove();
-                        alert(ret.msg);
-                        window.location.href = window.location.href;
-                    }
-                },'json');
-            }
-        }
+        $('input[name="selectAll"]').on("click",function(){
+        if($(this).is(':checked')){
+            $('input[name="id[]"]').each(function(){
+                $(this).prop("checked",true);
+            });
+        }else{
+            $('input[name="id[]"]').each(function(){
+                $(this).prop("checked",false);
+            });
+        }
+    });
     </script>
 </body>
 </html>
